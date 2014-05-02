@@ -1,3 +1,4 @@
+\iffalse
 \documentclass[11pt, reqno]{amsart}
 \usepackage{graphicx}
 \usepackage{geometry}
@@ -16,10 +17,11 @@
 Xiyang Dai, Zebao Gao and Hao Zhou\\
 Dept. of Computer Science
 \end{flushright}
+\fi
 
 \section{Tree-structured Covariance Estimation}
 Understanding similarities in expression profiles from a set of samples, e.g., multiple brain regions, is valuable to help understand many biological processes. A natural way to analyze this kind of similarities is to model a tree-structured covariance estimation. However, this kind of model turns out to be an non-convex optimization problems shown in recent paper from Hector etc \cite{Hector09}. In their paper, they have proposed a mixed-integer programming (MIP) approach to solve this non-convex optimization problem. 
-Specifically, they estimate a covariance matrix from observations of p continuous random variables encoding a stochastic process over a tree with p leaves. To formulate the estimation problem as instances of eel-studied numerical optimization problems, they used linear combinations of rank-one matrices indicating object partitions. Although they have shown great performance using MIP, this non-convex optimization problem for tree-structure covariance estimation is still far from solved.
+Specifically, they estimate a covariance matrix from observations of p continuous random variables encoding a stochastic process over a tree with p leaves. To formulate the estimation problem as instances of weel-studied numerical optimization problems, they used linear combinations of rank-one matrices indicating object partitions. Although they have shown great performance using MIP, this non-convex optimization problem for tree-structure covariance estimation is still far from solved.
 
 \section{Lagrangian Relaxation}
 Recently, in Natural Language Processing (NLP) filed, Lagrangian relaxation methods are employed for solving non-convex optimization problems .
@@ -36,7 +38,8 @@ The main challenges of our project include:
 \item[4] implementation of these methods.
 \end{itemize}
 
+\iffalse
 \bibliography{mybib}
 \bibliographystyle{plain}
 \end{document}
-
+\fi
