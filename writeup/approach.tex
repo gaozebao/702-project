@@ -1,0 +1,105 @@
+\iffalse
+\section{Tree-structured Covariance Estimation}
+Understanding similarities in expression profiles from a set of samples, e.g., multiple brain regions, is valuable to help understand many biological processes. A natural way to analyze this kind of similarities is to model a tree-structured covariance estimation. However, this kind of model turns out to be an non-convex optimization problems shown in recent paper from Hector etc \cite{Hector09}. In their paper, they have proposed a mixed-integer programming (MIP) approach to solve this non-convex optimization problem. 
+Specifically, they estimate a covariance matrix from observations of p continuous random variables encoding a stochastic process over a tree with p leaves. To formulate the estimation problem as instances of weel-studied numerical optimization problems, they used linear combinations of rank-one matrices indicating object partitions. Although they have shown great performance using MIP, this non-convex optimization problem for tree-structure covariance estimation is still far from solved.
+
+\section{Lagrangian Relaxation}
+Recently, in Natural Language Processing (NLP) filed, Lagrangian relaxation methods are employed for solving non-convex optimization problems .
+
+Recently, there is an increasing trend in applying Lagrangian relaxation methods to solve non-convex optimization problems, especially in NLP field. It has been successfully applied to several NLP inference problems such as Part-of-speech tagging \cite{Lagrangian}. But more studies are still desirable to conduct to evaluate its practicability in the tree-structured covariance estimation in our Bioinformatics problems.
+
+\section{Our Project}
+In this project, we will try to see whether Lagrangian relaxation method can be applied to solve this kind of non-convex optimization problem, and try to apply this tree-structured estimation method to Bio-related topics.
+The main challenges of our project include:
+\begin{itemize}
+\item[1] understanding the existing tree-structured covariance estimation problem;
+\item[2] understanding the Lagrangian relaxation method;
+\item[3] try to apply the method from NLP field to bio-related topics;
+\item[4] implementation of these methods.
+\end{itemize}
+\fi
+
+\section{Formulation of Problem}
+
+A set of nested partitions of objects can be defined by a rooted tree such that each node in the tree corresponds to a subset of these objects. The following definitions and the theorem introduces the most important terms and their relationship.
+
+\begin{definition}[Tree-structured Covariance Matrix]
+A tree-structured covariance matrix $B$ is a matrix such that each entry $B_{ij}$ is the sum of branch lengths for the path starting at the root and ending at the last common ancestor of leaves $i$ and $j$.
+\end{definition}
+
+\begin{definition}{Partition Property}
+A basis matrix $V$ of size p-by-(2p-1) with entries in {0, 1} and unique columns has the partition property for trees of size p if it satisfies the following conditions:
+\begin{itemize}
+\item[1)] V contains the vector of all onews $e = (1, 1, ..., 1)^T \in R^p$ as a column; and
+\item[2)] for every column w in V with more than one non-zero entry, it contains exactly two columns u and v such that u + v = w.
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Tree Covariance Representation]
+A matrix B is a tree-structured covariance matrix if and only if $B=VDV^T$ where D is a diagonal matrix with nonnegative entries and the basis matrix V has the partition property.
+\end{theorem}
+
+Now, we formulate our problem as follows:
+Give a sample covariance matrix $S$, we find the nearest tree-structured covariance matrix in Forbenius norm $|| \bullet ||_F$. Let $s$ be the vextorization of symmetric matrix $S$ such that $||S||_F~=~||s||_F$, then the problem we are solving is to find the solution to the following objective function:
+
+$\min \limits_{b \in R^{p(p+1)/2}, \rho \in R^{\overline{p}}} f(b) = \frac{1}{2}b^Tb - s_Tb$
+
+subject to the following constraints:
+
+\begin{align}
+B_{ij} & \ge 0 ~ \forall ~ i, j \\
+B_{ii} & \ge B_{ij} ~ \forall ~ i \not= j\\
+B_{ij} & \ge B_{ik} - (1 - \rho_{ijk1})M \\
+B_{ik} & \ge B_{jk} - (1 - \rho_{ijk1})M \\
+B_{jk} & \ge B_{ik} - (1 - \rho_{ijk1})M \\
+B_{ik} & \ge B_{ij} - (1 - \rho_{ijk2})M \\
+B_{ij} & \ge B_{jk} - (1 - \rho_{ijk2})M \\
+B_{jk} & \ge B_{ij} - (1 - \rho_{ijk2})M \\
+B_{jk} & \ge B_{ij} - (\rho_{ijk1} + \rho_{ijk2})M \\
+B_{ij} & \ge B_{ik} - (\rho_{ijk1} + \rho_{ijk2})M \\
+B_{ik} & \ge B_{ij} - (\rho_{ijk1} + \rho_{ijk2})M \\
+\rho_{ijk1} + \rho_{ijk2} & \le 0\\
+\rho_{ijk1}, \rho_{ijk2} & \in \{0, 1\} ~ \forall ~i > j > k
+\end{align}
+
+
+
+\section{Our Approach}
+
+The problem in the previous section can be solved using Mixed-Integer Programming (MIP).
+
+In this project, we solve the problem using Lagrangian Relaxation.
+
+Then our objective function becomes:
+$\min \limits_{b \in R^{p(p+1)/2}, \rho \in R^{\overline{p}}} f(b) = \frac{1}{2}b^Tb - s_Tb ~+ \sum \limits_{i, j, k} constraints(....)$
+
+Further more, we can introduce a new $\rho{ijk3}$ where $\rho_{ijk1} + \rho_{ijk2} + \rho_{ijk3} = 1$ and $\rho_{ijk1}, \rho_{ijk2}, \rho_{ijk3} \in [0, 1]$.
+To make the solution of $\rho_{ijk1}$, $\rho_{ijk2}$ and $\rho_{ijk3}$ tend to be one of the value in the set {0, 1}, we construct the following two functions:
+\begin{itemize}
+\item[1)] $g_1(\rho) = \sum \limits_{\rho} M \rho (1 - \rho)$
+\item[2)] $g_2(\rho) = - \sum \limits_{\rho} M \rho log(\rho)$
+\end{itemize} 
+
+Then we update the constraints as follows:
+\begin{align}
+B_{ij} & \ge 0 ~ \forall ~ i, j \\
+B_{ii} & \ge B_{ij} ~ \forall ~ i \not= j\\
+B_{ij} & \ge B_{ik} - (1 - \rho_{ijk1})M \\
+B_{ik} & \ge B_{jk} - (1 - \rho_{ijk1})M \\
+B_{jk} & \ge B_{ik} - (1 - \rho_{ijk1})M \\
+B_{ik} & \ge B_{ij} - (1 - \rho_{ijk2})M \\
+B_{ij} & \ge B_{jk} - (1 - \rho_{ijk2})M \\
+B_{jk} & \ge B_{ij} - (1 - \rho_{ijk2})M \\
+B_{jk} & \ge B_{ij} - (1 - \rho_{ijk3})M \\
+B_{ij} & \ge B_{ik} - (1 - \rho_{ijk3})M \\
+B_{ik} & \ge B_{ij} - (1 - \rho_{ijk3})M \\
+\rho_{ijk1} + \rho_{ijk2} + \rho_{ijk3} & = 1\\
+\rho_{ijk1}, \rho_{ijk2}, \rho_{ijk3} & \in [0, 1] ~ \forall ~i > j > k
+\end{align}
+
+And the object function can be:
+\begin{itemize}
+\item[1)]$\min \limits_{b \in R^{p(p+1)/2}, \rho \in R^{\overline{p}}} f(b) = \frac{1}{2}b^Tb - s_Tb ~+ g_1(\rho)$
+\item[2)]$\min \limits_{b \in R^{p(p+1)/2}, \rho \in R^{\overline{p}}} f(b) = \frac{1}{2}b^Tb - s_Tb ~+ g_2(\rho) $
+\end{itemize}
+
