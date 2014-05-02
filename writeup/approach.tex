@@ -1,24 +1,3 @@
-\iffalse
-\section{Tree-structured Covariance Estimation}
-Understanding similarities in expression profiles from a set of samples, e.g., multiple brain regions, is valuable to help understand many biological processes. A natural way to analyze this kind of similarities is to model a tree-structured covariance estimation. However, this kind of model turns out to be an non-convex optimization problems shown in recent paper from Hector etc \cite{Hector09}. In their paper, they have proposed a mixed-integer programming (MIP) approach to solve this non-convex optimization problem. 
-Specifically, they estimate a covariance matrix from observations of p continuous random variables encoding a stochastic process over a tree with p leaves. To formulate the estimation problem as instances of weel-studied numerical optimization problems, they used linear combinations of rank-one matrices indicating object partitions. Although they have shown great performance using MIP, this non-convex optimization problem for tree-structure covariance estimation is still far from solved.
-
-\section{Lagrangian Relaxation}
-Recently, in Natural Language Processing (NLP) filed, Lagrangian relaxation methods are employed for solving non-convex optimization problems .
-
-Recently, there is an increasing trend in applying Lagrangian relaxation methods to solve non-convex optimization problems, especially in NLP field. It has been successfully applied to several NLP inference problems such as Part-of-speech tagging \cite{Lagrangian}. But more studies are still desirable to conduct to evaluate its practicability in the tree-structured covariance estimation in our Bioinformatics problems.
-
-\section{Our Project}
-In this project, we will try to see whether Lagrangian relaxation method can be applied to solve this kind of non-convex optimization problem, and try to apply this tree-structured estimation method to Bio-related topics.
-The main challenges of our project include:
-\begin{itemize}
-\item[1] understanding the existing tree-structured covariance estimation problem;
-\item[2] understanding the Lagrangian relaxation method;
-\item[3] try to apply the method from NLP field to bio-related topics;
-\item[4] implementation of these methods.
-\end{itemize}
-\fi
-
 \section{Formulation of Problem}
 
 A set of nested partitions of objects can be defined by a rooted tree such that each node in the tree corresponds to a subset of these objects. The following definitions and the theorem introduces the most important terms and their relationship.
